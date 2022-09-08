@@ -8,6 +8,43 @@ import { RiSearch2Line } from "react-icons/ri";
 import { postDetails } from "../../redux/reducer/Details/details.reducer";
 
 function MobileNav() {
+  const reduxState = useSelector(
+    (globalState) => globalState.collegeReducer.colleges
+  );
+
+  const [searchInput, setSearchInput] = useState("");
+
+  const [searchData, setSearchData] = useState([]); //searched data
+
+  // search utility funciton
+  const handleChange = async (e) => {
+    setSearchInput(e.target.value);
+    let value = e.target.value;
+    if (value.length > 2) {
+      let search = await arraySearch(reduxState, value);
+
+      setSearchData(search);
+    }
+  };
+
+  // search funciton
+  const arraySearch = (array, keyword) => {
+    const searchTerm = keyword.toLowerCase();
+    return array.filter((value) => {
+      return value.name.toLowerCase().match(new RegExp(searchTerm, "g"));
+    });
+  };
+
+  const history = useHistory();
+  const continueToCheckout = () => history.push("/details");
+
+  const dispatch = useDispatch();
+  const passingdata = (data) => {
+    dispatch(postDetails(data));
+    continueToCheckout();
+    window.location.href = "/details";
+  };
+
   return (
     <div className="flex w-full items-center justify-between lg:hidden">
       <div className="w-28">
@@ -25,14 +62,32 @@ function MobileNav() {
               type="search"
               placeholder="Search for college name"
               className="w-full focus:outline-none"
+              onChange={handleChange}
             />
           </div>
         </>
+        {searchData.length > 0 && (
+          <div className="absolute shadow-sm py-3   top-10  w-full bg-gray-100 z-20 flex h-32 flex-col gap-2 overflow-y-auto">
+            {searchData &&
+              searchData.map((val, index) => {
+                return (
+                  <>
+                    {console.log(searchData.length)}
+                    <div
+                      className="px-2 border-b-2 border-gray-300 cursor-pointer"
+                      onClick={() => passingdata(val)}
+                    >
+                      {val.name}
+                    </div>
+                  </>
+                );
+              })}
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
 
 function LargeNav() {
   const reduxState = useSelector(
@@ -41,22 +96,20 @@ function LargeNav() {
 
   const [searchInput, setSearchInput] = useState("");
 
-  
-  const [searchData, setSearchData] = useState([]);    //searched data
+  const [searchData, setSearchData] = useState([]); //searched data
 
- 
   // search utility funciton
   const handleChange = async (e) => {
     setSearchInput(e.target.value);
     let value = e.target.value;
     if (value.length > 2) {
       let search = await arraySearch(reduxState, value);
-      
+
       setSearchData(search);
-    } 
+    }
   };
 
-  // search funciton 
+  // search funciton
   const arraySearch = (array, keyword) => {
     const searchTerm = keyword.toLowerCase();
     return array.filter((value) => {
@@ -67,15 +120,12 @@ function LargeNav() {
   const history = useHistory();
   const continueToCheckout = () => history.push("/details");
 
-  const dispatch=useDispatch()
-  const passingdata=(data)=>
-  {
+  const dispatch = useDispatch();
+  const passingdata = (data) => {
     dispatch(postDetails(data));
     continueToCheckout();
-    window.location.href="/details";
-
-  }
-
+    window.location.href = "/details";
+  };
 
   return (
     <>
@@ -97,22 +147,25 @@ function LargeNav() {
                 className="w-full focus:outline-none "
                 onChange={handleChange}
               />
-              
-              { searchData.length>0 && 
+
+              {searchData.length > 0 && (
                 <div className="absolute shadow-sm py-3   top-10  w-full bg-gray-100 z-20 flex h-32 flex-col gap-2 overflow-y-auto">
                   {searchData &&
                     searchData.map((val, index) => {
                       return (
                         <>
                           {console.log(searchData.length)}
-                          <div className="px-2 border-b-2 border-gray-300 cursor-pointer"
-                          onClick={()=>passingdata(val)}
-                          >{val.name}</div>
+                          <div
+                            className="px-2 border-b-2 border-gray-300 cursor-pointer"
+                            onClick={() => passingdata(val)}
+                          >
+                            {val.name}
+                          </div>
                         </>
                       );
                     })}
                 </div>
-              }
+              )}
             </div>
           </div>
 
@@ -130,7 +183,6 @@ function LargeNav() {
     </>
   );
 }
-
 
 // Navbar
 function Navbar() {
