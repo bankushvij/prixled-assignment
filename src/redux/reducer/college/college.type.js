@@ -1,0 +1,1 @@
+export const GET_COLLEGE="GET_COLLEGE";
