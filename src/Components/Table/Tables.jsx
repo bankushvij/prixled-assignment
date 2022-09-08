@@ -70,7 +70,7 @@ function Tables({ tabledata, rowsPerPage }) {
                           <td className="text-left py-3 px-4">
                             <a
                               className="hover:text-blue-500"
-                              href="tel:622322662"
+                             
                             >
                               {data.domains}
                             </a>
