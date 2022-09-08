@@ -7,8 +7,10 @@ import DetailsPage from "./Pages/DetailsPage";
 
 import HomepageHOC from "./HOC/HomepageHOC";
 import DetailsHOC from "./HOC/DetailsHOC";
+
 function App() {
   const { type } = useParams();
+  
   return (
     <div className="App">
       <Route path="/" exact>

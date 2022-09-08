@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import useTable from "./useTable";
 import TableFooter from "./TableFooter";
 
-import { useDispatch } from "react-redux";
 import { postDetails } from "../../redux/reducer/Details/details.reducer";
 
 function Tables({ tabledata, rowsPerPage }) {

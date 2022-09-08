@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { RiSearch2Line } from "react-icons/ri";
-import { useSelector } from "react-redux";
+
+import { postDetails } from "../../redux/reducer/Details/details.reducer";
 
 function MobileNav() {
   return (
@@ -61,6 +64,19 @@ function LargeNav() {
     });
   };
 
+  const history = useHistory();
+  const continueToCheckout = () => history.push("/details");
+
+  const dispatch=useDispatch()
+  const passingdata=(data)=>
+  {
+    dispatch(postDetails(data));
+    continueToCheckout();
+    window.location.href="/details";
+
+  }
+
+
   return (
     <>
       <div className="hidden lg:inline container px-20 mx-auto ">
@@ -82,14 +98,16 @@ function LargeNav() {
                 onChange={handleChange}
               />
               
-              { searchInput.length>0 && 
+              { searchData.length>0 && 
                 <div className="absolute shadow-sm py-3   top-10  w-full bg-gray-100 z-20 flex h-32 flex-col gap-2 overflow-y-auto">
                   {searchData &&
                     searchData.map((val, index) => {
                       return (
                         <>
                           {console.log(searchData.length)}
-                          <div className="px-2 border-b-2 border-gray-300 cursor-pointer">{val.name}</div>
+                          <div className="px-2 border-b-2 border-gray-300 cursor-pointer"
+                          onClick={()=>passingdata(val)}
+                          >{val.name}</div>
                         </>
                       );
                     })}
